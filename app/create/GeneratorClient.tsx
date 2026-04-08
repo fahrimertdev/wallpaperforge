@@ -11,7 +11,7 @@ import PreviewPanel from "@/components/preview/PreviewPanel";
 import ActionBar from "@/components/generator/ActionBar";
 
 function GeneratorInner() {
-  const { state, loadConfig, randomizeParams: applyParams, setIsExporting, loadConfig: lc } = useGenerator();
+  const { state, loadConfig, randomizeParams: applyParams, setIsExporting } = useGenerator();
 
   // Load config from URL on mount
   useEffect(() => {
@@ -33,8 +33,7 @@ function GeneratorInner() {
         applyParams(randomizeParams(state.config));
       }
       if (e.key === "s" || e.key === "S") {
-        applyParams(randomizeAll(state.config) as never);
-        lc(randomizeAll(state.config));
+        loadConfig(randomizeAll(state.config));
       }
       if (e.key === "d" || e.key === "D") {
         setIsExporting(true);
@@ -43,7 +42,7 @@ function GeneratorInner() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [state.config, applyParams, setIsExporting, lc]);
+  }, [state.config, applyParams, setIsExporting, loadConfig]);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
